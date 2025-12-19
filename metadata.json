@@ -1,0 +1,5 @@
+{
+  "name": "Pr0mptim1zer",
+  "description": "An advanced prompt engineering tool that rewrites and optimizes your prompts specifically for different LLM architectures (Gemini, GPT-4, Claude, etc.).",
+  "requestFramePermissions": []
+}
