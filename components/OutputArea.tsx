@@ -30,6 +30,28 @@ export const OutputArea: React.FC<OutputAreaProps> = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleDownload = () => {
+    if (!prompt.trim()) return;
+    
+    // Create a descriptive filename: prompt-[model]-[date]-[snippet].txt
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const cleanModel = targetModelName.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+    // Take first 20 chars of prompt, sanitizing for filename safety
+    const snippet = prompt.slice(0, 20).replace(/[^a-zA-Z0-9]/g, '_');
+    
+    const fileName = `prompt-${cleanModel}-${dateStr}-${snippet}.txt`;
+    
+    const blob = new Blob([prompt], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="flex flex-col h-full w-full max-w-5xl mx-auto pt-4 pb-4 px-4 sm:px-8">
       {/* Header Actions */}
@@ -82,8 +104,10 @@ export const OutputArea: React.FC<OutputAreaProps> = ({
                 {copied ? <Check size={14} /> : <Copy size={14} />}
             </button>
              <button 
-                className="flex items-center space-x-2 bg-transparent hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 px-3 py-1.5 rounded-md text-sm transition-colors"
-                title="Save to history"
+                onClick={handleDownload}
+                disabled={!prompt.trim()}
+                className={`flex items-center space-x-2 bg-transparent hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 px-3 py-1.5 rounded-md text-sm transition-colors ${!prompt.trim() ? 'opacity-50 cursor-not-allowed' : ''}`}
+                title="Save to txt file"
             >
                 <Save size={14} />
             </button>
