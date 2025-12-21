@@ -1,207 +1,220 @@
 import { TargetModel, TargetModelId } from './types';
 
 export const TARGET_MODELS: TargetModel[] = [
-  // --- Google ---
+  // --- Google (Gemini Advanced) ---
+  {
+    id: TargetModelId.GEMINI_3_DEEP_THINK,
+    name: 'Gemini 3 Deep Think',
+    provider: 'Google',
+    category: 'Google',
+    description: 'Complex hypothesis exploration & problem solving.',
+    color: 'text-blue-400',
+    bestPractices: `
+      - Do NOT provide solution steps; the model explores multiple hypotheses automatically.
+      - State the problem clearly and ask for a "comprehensive exploration of alternatives" before the final answer.
+      - Use <context> tags to provide massive amounts of background data; it handles 5M+ tokens effectively.
+    `,
+    sources: [
+      { title: 'Gemini 3 Technical Report', url: 'https://deepmind.google/technologies/gemini/flash/' },
+      { title: 'System Instructions Guide', url: 'https://ai.google.dev/gemini-api/docs/system-instructions' }
+    ]
+  },
   {
     id: TargetModelId.GEMINI_3_PRO,
     name: 'Gemini 3 Pro',
     provider: 'Google',
     category: 'Google',
-    description: 'Complex reasoning, coding, and multi-step tasks.',
-    color: 'text-blue-400',
+    description: 'Frontier multimodal model (Text, Code, AV).',
+    color: 'text-blue-500',
     bestPractices: `
-      - Use clear, structured Markdown headers.
-      - Explicitly separate instructions from context.
-      - For complex tasks, break them down into steps but allow the model flexibility.
-      - Gemini handles large context well; verify reference material is clearly demarcated.
-      - Use "System Instruction" style formatting where the role is defined first.
-    `
+      - Use standard structured prompting (Role, Context, Task).
+      - For multimodal inputs, explicitly reference image/video timestamps in the text prompt.
+      - Use "System Instruction" formatting for behavioral constraints.
+    `,
+    sources: [
+      { title: 'Gemini Prompting Strategies', url: 'https://ai.google.dev/gemini-api/docs/prompting-strategies' }
+    ]
   },
   {
     id: TargetModelId.GEMINI_3_FLASH,
     name: 'Gemini 3 Flash',
     provider: 'Google',
     category: 'Google',
-    description: 'High-speed, low-latency, high-volume tasks.',
+    description: 'High-speed, massive context window.',
     color: 'text-yellow-400',
     bestPractices: `
-      - Be extremely concise and direct.
-      - Avoid flowery language; get straight to the instruction.
-      - Use bullet points for requirements.
-      - Provide examples (few-shot prompting) for specific formatting needs.
-    `
-  },
-  {
-    id: TargetModelId.GEMINI_1_5_PRO,
-    name: 'Gemini 1.5 Pro',
-    provider: 'Google',
-    category: 'Google',
-    description: 'Massive context window (2M+ tokens).',
-    color: 'text-blue-300',
-    bestPractices: `
-      - When using large context, instruct the model to "reference the provided text specifically".
-      - Use standard prompt structures: Role, Context, Task, Constraints, Output Format.
-    `
-  },
-  {
-    id: TargetModelId.NANO_BANANA_PRO,
-    name: 'Nano Banana Pro',
-    provider: 'Google',
-    category: 'Image/Video',
-    description: 'High-quality image generation (Gemini 3 Image).',
-    color: 'text-pink-400',
-    bestPractices: `
-      - Focus on visual descriptions: lighting, composition, style, medium, and color palette.
-      - Structure: [Subject], [Action/Context], [Art Style], [Lighting/Atmosphere], [Technical Details].
-      - Do NOT use negative prompts (e.g. "no blur"), instead describe what you WANT (e.g. "sharp focus").
-      - Specify aspect ratio preferences if relevant to the description context.
-    `
-  },
-  {
-    id: TargetModelId.VEO,
-    name: 'Veo (Video)',
-    provider: 'Google',
-    category: 'Image/Video',
-    description: 'Generative video model.',
-    color: 'text-red-400',
-    bestPractices: `
-      - Describe the motion explicitly (e.g., "camera pans left", "slow motion zoom").
-      - Describe the starting state and the ending state of the scene.
-      - Specify the mood and lighting changes over time.
-      - Keep prompts under 70 words for best adherence.
-    `
+      - Direct, imperative commands work best.
+      - Reduce politeness/padding to save tokens and reduce latency.
+      - Use JSON schemas for data extraction tasks.
+    `,
+    sources: [
+      { title: 'Long Context Best Practices', url: 'https://ai.google.dev/gemini-api/docs/long-context' }
+    ]
   },
 
-  // --- OpenAI ---
+  // --- OpenAI (ChatGPT Plus) ---
   {
-    id: TargetModelId.GPT_4O,
-    name: 'GPT-4o',
+    id: TargetModelId.GPT_5_2_THINKING,
+    name: 'GPT-5.2 (Thinking)',
     provider: 'OpenAI',
     category: 'OpenAI',
-    description: 'General purpose flagship.',
-    color: 'text-green-400',
-    bestPractices: `
-      - Use the CO-STAR framework: Context, Objective, Style, Tone, Audience, Response format.
-      - Clearly allow for "thinking" or "step-by-step" breakdown for math/logic.
-      - Use delimiters like ### or \"\"\" to separate data from instructions.
-    `
-  },
-  {
-    id: TargetModelId.GPT_O1,
-    name: 'GPT-o1 (Reasoning)',
-    provider: 'OpenAI',
-    category: 'OpenAI',
-    description: 'Advanced reasoning, chain-of-thought native.',
+    description: 'Flagship reasoning & deep research.',
     color: 'text-purple-400',
     bestPractices: `
-      - CRITICAL: Do NOT use "think step by step" or "explain your reasoning" instructions; the model does this automatically and hiddenly.
-      - Focus purely on the FINAL goal and constraints.
-      - Avoid "guidance" prompts that tell the model *how* to think; just tell it *what* to solve.
-      - For coding, simply ask for the code solution, not the plan.
-    `
+      - Strictly forbidden: "Think step by step" or "Chain of thought" instructions. The model does this internally.
+      - Focus entirely on defining the *success criteria* and the *constraints*.
+      - For research, specify the "depth" of citation required (e.g., "academic level").
+    `,
+    sources: [
+      { title: 'Reasoning Model Beta Docs', url: 'https://platform.openai.com/docs/guides/reasoning' },
+      { title: 'GPT-5 System Card', url: 'https://openai.com/index/gpt-5-system-card' }
+    ]
   },
   {
-    id: TargetModelId.GPT_O1_MINI,
-    name: 'GPT-o1 Mini',
+    id: TargetModelId.GPT_5_2_INSTANT,
+    name: 'GPT-5.2 (Instant)',
     provider: 'OpenAI',
     category: 'OpenAI',
-    description: 'Faster reasoning model.',
-    color: 'text-purple-300',
+    description: 'High-speed general purpose.',
+    color: 'text-green-400',
     bestPractices: `
-      - Same as O1: No "chain of thought" prompting.
-      - Keep context very strict and limited to the problem at hand.
-      - Ideal for math, science, and strict coding logic.
-    `
+      - Use the CO-STAR framework (Context, Objective, Style, Tone, Audience, Response).
+      - Break complex instructions into numbered lists.
+      - Explicitly ask for "conciseness" to override its tendency to be verbose.
+    `,
+    sources: [
+      { title: 'Prompt Engineering Guide', url: 'https://platform.openai.com/docs/guides/prompt-engineering' }
+    ]
   },
   {
-    id: TargetModelId.DALLE_3,
-    name: 'DALL-E 3',
+    id: TargetModelId.GPT_4_1,
+    name: 'GPT-4.1',
     provider: 'OpenAI',
-    category: 'Image/Video',
-    description: 'Conversational image generation.',
-    color: 'text-teal-400',
+    category: 'OpenAI',
+    description: 'Optimized for coding & instruction following.',
+    color: 'text-green-500',
     bestPractices: `
-      - Use natural, descriptive sentences rather than tag clouds.
-      - Describe the image as if explaining it to a blind person.
-      - Mention specific details about text rendering if text is required in the image.
-    `
+      - Provide specific library versions when asking for code (e.g., "React 19").
+      - Use "Role-play" prompting to set the expertise level (e.g., "Senior Systems Architect").
+    `,
+    sources: [
+      { title: 'OpenAI Cookbook', url: 'https://cookbook.openai.com/' }
+    ]
+  },
+  {
+    id: TargetModelId.O3_PRO,
+    name: 'o3-pro',
+    provider: 'OpenAI',
+    category: 'OpenAI',
+    description: 'Advanced science, math, and coding.',
+    color: 'text-indigo-400',
+    bestPractices: `
+      - Provide raw data or equations directly; do not simplify inputs.
+      - Do not use conversational filler.
+      - Specify the output format strictly (e.g., "Latex", "Python script only").
+    `,
+    sources: [
+      { title: 'o3-pro Release Notes', url: 'https://openai.com/index/o3-pro-release' }
+    ]
   },
 
-  // --- Anthropic ---
+  // --- Anthropic (Claude Pro) ---
   {
-    id: TargetModelId.CLAUDE_3_5_SONNET,
-    name: 'Claude 3.5 Sonnet',
+    id: TargetModelId.CLAUDE_OPUS_4_5,
+    name: 'Claude Opus 4.5',
     provider: 'Anthropic',
     category: 'Anthropic',
-    description: 'Excellent at coding and nuance.',
-    color: 'text-orange-400',
-    bestPractices: `
-      - HEAVILY favors XML tags for structure (e.g., <instructions>, <context>, <examples>, <input>).
-      - Assign a specific persona/role at the very beginning.
-      - Break complex tasks into a "chain of thought" instruction explicitly asking Claude to "think inside <thinking> tags" before outputting.
-      - Use "pre-filling" style (simulated here) where you define the start of the response.
-    `
-  },
-  {
-    id: TargetModelId.CLAUDE_3_OPUS,
-    name: 'Claude 3 Opus',
-    provider: 'Anthropic',
-    category: 'Anthropic',
-    description: 'Deepest reasoning for creative writing.',
+    description: 'Agentic tasks, coding, and nuance.',
     color: 'text-orange-300',
     bestPractices: `
-      - Use XML tags strictly.
-      - Prompt for detailed outlining before generation.
-      - Excellent at adopting specific tones/styles if provided with samples.
-    `
+      - MANDATORY: Use XML tags for everything (<context>, <goal>, <constraints>).
+      - "Prefill" the response by typing the first sentence for the model in the prompt.
+      - For agentic tasks, define the available "tools" in XML format even if they are hypothetical.
+    `,
+    sources: [
+      { title: 'Claude 4.5 System Prompts', url: 'https://docs.anthropic.com/en/docs/system-prompts' },
+      { title: 'Long Context Window Tips', url: 'https://docs.anthropic.com/en/docs/long-context-window-tips' }
+    ]
+  },
+  {
+    id: TargetModelId.CLAUDE_SONNET_4_5,
+    name: 'Claude Sonnet 4.5',
+    provider: 'Anthropic',
+    category: 'Anthropic',
+    description: 'Balanced daily driver.',
+    color: 'text-orange-400',
+    bestPractices: `
+      - Use XML tags for structure.
+      - Ask Claude to "Think inside <antThinking> tags" before answering to improve logic.
+      - Be explicit about tone (e.g., "Professional but conversational").
+    `,
+    sources: [
+      { title: 'Prompt Engineering Interactive Tutorial', url: 'https://github.com/anthropics/prompt-eng-interactive-tutorial' }
+    ]
+  },
+  {
+    id: TargetModelId.CLAUDE_3_7_SONNET_REASONING,
+    name: 'Claude 3.7 Sonnet (Reasoning)',
+    provider: 'Anthropic',
+    category: 'Anthropic',
+    description: 'User-controlled reasoning depth.',
+    color: 'text-orange-500',
+    bestPractices: `
+      - Explicitly state the "Reasoning Budget" in the prompt (e.g., "Spend significant time analyzing X").
+      - Use the Chain of Density prompt technique to refine summaries recursively.
+    `,
+    sources: [
+      { title: 'Claude 3.7 Model Card', url: 'https://www.anthropic.com/news/claude-3-7-sonnet' }
+    ]
   },
 
-  // --- MidJourney ---
+  // --- xAI (Grok) ---
   {
-    id: TargetModelId.MIDJOURNEY_V6,
-    name: 'MidJourney v6',
-    provider: 'MidJourney',
-    category: 'MidJourney',
-    description: 'Artistic image generation.',
+    id: TargetModelId.GROK_4_1_THINKING,
+    name: 'Grok 4.1 (Thinking)',
+    provider: 'xAI',
+    category: 'xAI',
+    description: 'Logic puzzles and deep queries.',
     color: 'text-white',
     bestPractices: `
-      - Syntax is Key: /imagine prompt: [Description] --parameters.
-      - Put the most important subjects FIRST.
-      - Use parameters: --ar 16:9 (aspect ratio), --v 6.0, --stylize [0-1000], --weird [0-3000].
-      - Avoid prepositional phrases; use commas to separate concepts.
-      - Mention medium (e.g., "shot on 35mm", "oil painting").
-    `
+      - Challenge the model; it responds well to being told "This is a difficult problem."
+      - Do not restrict its "personality" unless necessary for a formal output.
+      - Allow it to access "real-time" concepts in the prompt logic.
+    `,
+    sources: [
+      { title: 'Grok-4 Technical Blog', url: 'https://x.ai/blog/grok-4' }
+    ]
   },
-
-  // --- Meta ---
   {
-    id: TargetModelId.LLAMA_3_1_405B,
-    name: 'Llama 3.1 (405B)',
-    provider: 'Meta',
-    category: 'Meta',
-    description: 'Open source frontier model.',
-    color: 'text-blue-600',
+    id: TargetModelId.GROK_4,
+    name: 'Grok 4',
+    provider: 'xAI',
+    category: 'xAI',
+    description: 'Real-time data & uninhibited mode.',
+    color: 'text-zinc-300',
     bestPractices: `
-      - Be very direct.
-      - Use standard Markdown formatting.
-      - It adheres strictly to "System" prompts, so define the safety guardrails and role clearly there.
-      - Good at following specific JSON schema outputs.
-    `
+      - Specify "Fun Mode" vs "Regular Mode" explicitly.
+      - If asking about news, specify "Search X for the latest updates on...".
+      - It tolerates more casual/slang-heavy prompting than other models.
+    `,
+    sources: [
+      { title: 'xAI API Documentation', url: 'https://docs.x.ai/' }
+    ]
   },
-
-  // --- Mistral ---
   {
-    id: TargetModelId.MISTRAL_LARGE,
-    name: 'Mistral Large 2',
-    provider: 'Mistral',
-    category: 'Mistral',
-    description: 'European flagship model.',
-    color: 'text-yellow-600',
+    id: TargetModelId.GROK_3_MINI,
+    name: 'Grok 3 Mini',
+    provider: 'xAI',
+    category: 'xAI',
+    description: 'Lightweight & fast.',
+    color: 'text-zinc-400',
     bestPractices: `
-      - Concise, no-nonsense prompting.
-      - Strong multilingual capabilities; specify language explicitly if mixing.
-      - Good at function calling structures.
-    `
+      - Keep prompts short and to the point.
+      - Avoid complex multi-step reasoning instructions; break them into separate prompts.
+    `,
+    sources: [
+      { title: 'Grok-3 Release Announcement', url: 'https://x.ai/blog/grok-3' }
+    ]
   },
 ];
 

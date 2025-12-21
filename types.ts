@@ -1,34 +1,32 @@
 export enum TargetModelId {
-  // Google
-  GEMINI_3_PRO = 'gemini-3-pro-preview',
-  GEMINI_3_FLASH = 'gemini-3-flash-preview',
-  GEMINI_1_5_PRO = 'gemini-1.5-pro',
-  GEMINI_1_5_FLASH = 'gemini-1.5-flash',
-  NANO_BANANA_PRO = 'gemini-3-pro-image-preview', // Image
-  VEO = 'veo-3.1-generate-preview', // Video
+  // Google (Gemini Advanced)
+  GEMINI_3_DEEP_THINK = 'gemini-3-deep-think',
+  GEMINI_3_PRO = 'gemini-3-pro',
+  GEMINI_3_FLASH = 'gemini-3-flash',
   
-  // OpenAI
-  GPT_4O = 'gpt-4o',
-  GPT_O1 = 'gpt-o1-preview',
-  GPT_O1_MINI = 'gpt-o1-mini',
-  DALLE_3 = 'dall-e-3',
+  // OpenAI (ChatGPT Plus)
+  GPT_5_2_THINKING = 'gpt-5.2-thinking',
+  GPT_5_2_INSTANT = 'gpt-5.2-instant',
+  GPT_4_1 = 'gpt-4.1',
+  O3_PRO = 'o3-pro',
 
-  // Anthropic
-  CLAUDE_3_5_SONNET = 'claude-3-5-sonnet',
-  CLAUDE_3_OPUS = 'claude-3-opus',
+  // Anthropic (Claude Pro)
+  CLAUDE_OPUS_4_5 = 'claude-4.5-opus',
+  CLAUDE_SONNET_4_5 = 'claude-4.5-sonnet',
+  CLAUDE_3_7_SONNET_REASONING = 'claude-3.7-sonnet-reasoning',
 
-  // MidJourney
-  MIDJOURNEY_V6 = 'midjourney-v6',
-
-  // Meta
-  LLAMA_3_1_405B = 'llama-3.1-405b',
-  LLAMA_3_1_70B = 'llama-3.1-70b',
-
-  // Mistral
-  MISTRAL_LARGE = 'mistral-large-2',
+  // xAI (Grok)
+  GROK_4_1_THINKING = 'grok-4.1-thinking',
+  GROK_4 = 'grok-4',
+  GROK_3_MINI = 'grok-3-mini',
 }
 
-export type ModelCategory = 'Google' | 'OpenAI' | 'Anthropic' | 'MidJourney' | 'Meta' | 'Mistral' | 'Image/Video';
+export type ModelCategory = 'Google' | 'OpenAI' | 'Anthropic' | 'xAI';
+
+export interface Source {
+  title: string;
+  url: string;
+}
 
 export interface TargetModel {
   id: TargetModelId;
@@ -38,6 +36,7 @@ export interface TargetModel {
   description: string;
   color: string; // Tailwind text color class
   bestPractices: string; // Specific prompt engineering instructions for this model
+  sources: Source[]; // Documentation sources
 }
 
 export interface OptimizationResponse {
