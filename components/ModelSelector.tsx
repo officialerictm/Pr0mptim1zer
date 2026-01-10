@@ -10,6 +10,68 @@ interface ModelSelectorProps {
 
 const BRANDS: ModelBrand[] = ['ChatGPT', 'Gemini', 'Copilot', 'Claude'];
 
+const ProviderIcon = ({ provider, className = "w-4 h-4" }: { provider: string; className?: string }) => {
+  switch (provider) {
+    case 'OpenAI':
+      return (
+        <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+          <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.0462 6.0462 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9723V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7865a4.4944 4.4944 0 0 1 6.6802 4.6606zm-4.0881-5.8717l-4.7783 2.7582a.7948.7948 0 0 0-.3927.6813v6.7369l-2.02-1.1686a.0757.0757 0 0 1-.0379-.0568v-5.5873a4.4755 4.4755 0 0 1 2.8764-1.0455 4.4565 4.4565 0 0 1 4.3525 3.3282zM18.2982 6l-6.2587 3.6144-6.2587-3.6144L12.0395 2.4z"/>
+        </svg>
+      );
+    case 'Google':
+      return (
+        <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+          <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .533 5.347.533 12S5.867 24 12.48 24c3.44 0 6.013-1.133 8.053-3.24 2.067-2.067 2.693-5.067 2.693-7.56 0-.747-.067-1.48-.187-2.28l-10.56-.001z"/>
+        </svg>
+      );
+    case 'Anthropic':
+      return (
+        <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+           <path d="M17.863 9.471c.059-.214.285-.291.432-.148l.422.41a.34.34 0 0 0 .584-.236V9.45a.34.34 0 0 0-.106-.245l-4.502-4.382a.34.34 0 0 0-.476 0L9.715 9.205a.34.34 0 0 0-.106.246v.047c0 .13.076.248.196.303l.388.179a.34.34 0 0 0 .445-.11l.053-.082c.15-.23.473-.243.642-.026l1.248 1.604a.34.34 0 0 0 .538 0l1.248-1.604c.169-.217.492-.204.642.026l.053.082c.07.108.192.17.32.164l.432-.02c.214-.01.353-.228.297-.433l-.248-1.11z"/>
+           <path d="M6 19a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H6zm0-2h12v-4H6v4z" opacity="0.8"/>
+           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" opacity="0.3"/>
+        </svg>
+      );
+    case 'Microsoft':
+      return (
+        <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+          <rect x="2" y="2" width="9" height="9"/>
+          <rect x="13" y="2" width="9" height="9"/>
+          <rect x="2" y="13" width="9" height="9"/>
+          <rect x="13" y="13" width="9" height="9"/>
+        </svg>
+      );
+    case 'DeepSeek':
+      return (
+        <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+            <path d="M12 2L2 22h20L12 2zm0 4L18 18H6L12 6z" />
+        </svg>
+      );
+    case 'xAI':
+        return (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                <path d="M18 6L6 18" />
+                <path d="M6 6l12 12" />
+            </svg>
+        );
+    case 'Mistral':
+        return (
+            <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+                <path d="M4 12c0-4.418 3.582-8 8-8s8 3.582 8 8"/>
+                <path d="M4 12v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" strokeWidth="2" />
+            </svg>
+        );
+    case 'Meta':
+        return (
+            <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+                <path d="M12 6.5c-2.5 0-4.5 2-4.5 4.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5zm0-4.5C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 16c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6z" fillRule="evenodd"/>
+            </svg>
+        );
+    default:
+      return <div className={`bg-zinc-700 rounded-full ${className}`} />;
+  }
+};
+
 export const ModelSelector: React.FC<ModelSelectorProps> = ({ selectedModel, onSelect }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
@@ -171,12 +233,17 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ selectedModel, onS
                                             : 'hover:bg-zinc-800 border border-transparent'
                                     }`}
                                 >
-                                    <div>
-                                        <div className={`text-sm ${selectedModel.id === model.id ? 'text-emerald-400 font-medium' : 'text-zinc-300 group-hover:text-white'}`}>
-                                            {model.name}
+                                    <div className="flex items-center gap-3">
+                                        <div className={`shrink-0 transition-colors ${selectedModel.id === model.id ? 'text-emerald-400' : 'text-zinc-500 group-hover:text-zinc-400'}`}>
+                                            <ProviderIcon provider={model.provider} className="w-5 h-5" />
                                         </div>
-                                        <div className="text-[10px] text-zinc-500 line-clamp-1">
-                                            {model.description}
+                                        <div>
+                                            <div className={`text-sm ${selectedModel.id === model.id ? 'text-emerald-400 font-medium' : 'text-zinc-300 group-hover:text-white'}`}>
+                                                {model.name}
+                                            </div>
+                                            <div className="text-[10px] text-zinc-500 line-clamp-1">
+                                                {model.description}
+                                            </div>
                                         </div>
                                     </div>
                                     {selectedModel.id === model.id && <Check size={14} className="text-emerald-500" />}

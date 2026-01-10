@@ -13,6 +13,7 @@ export default function App() {
   const [explanation, setExplanation] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [isDeepMode, setIsDeepMode] = useState(false);
+  const [generationId, setGenerationId] = useState(0);
 
   const handleOptimization = async (inputPrompt: string) => {
     if (!inputPrompt.trim()) return;
@@ -24,6 +25,7 @@ export default function App() {
       const result = await optimizePrompt(inputPrompt, selectedModel.id, isDeepMode);
       setOptimizedPrompt(result.optimizedPrompt);
       setExplanation(result.explanation);
+      setGenerationId(prev => prev + 1);
     } catch (error) {
       console.error(error);
       setOptimizedPrompt((prev) => prev ? prev + `\n\nError: ${error instanceof Error ? error.message : 'Something went wrong.'}` : `Error: ${error instanceof Error ? error.message : 'Something went wrong.'}`);
@@ -53,20 +55,28 @@ export default function App() {
 
           <div className="h-4 w-px bg-zinc-700 mx-2 hidden sm:block"></div>
           
-          {/* Deep Mode Toggle */}
-          <button
-            onClick={() => setIsDeepMode(!isDeepMode)}
-            className={`group flex items-center space-x-2 px-3 py-1.5 rounded-full border transition-all duration-300 ${
-              isDeepMode 
-                ? 'bg-purple-900/20 border-purple-500/50 text-purple-300 hover:bg-purple-900/30' 
-                : 'bg-zinc-900/50 border-zinc-700 text-zinc-500 hover:border-zinc-500 hover:text-zinc-300'
-            }`}
-            title="Deep Optimization Mode (Double-pass Critique)"
-          >
-             <BrainCircuit size={14} className={`transition-colors ${isDeepMode ? 'text-purple-400' : 'text-zinc-600 group-hover:text-zinc-400'}`} />
-             <span className="text-xs font-medium">Deep Mode</span>
-             <div className={`w-2 h-2 rounded-full transition-colors ${isDeepMode ? 'bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]' : 'bg-zinc-700'}`} />
-          </button>
+          {/* Deep Mode Toggle Group */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsDeepMode(!isDeepMode)}
+              className={`group flex items-center space-x-2 px-3 py-1.5 rounded-full border transition-all duration-300 ${
+                isDeepMode 
+                  ? 'bg-purple-900/20 border-purple-500/50 text-purple-300 hover:bg-purple-900/30' 
+                  : 'bg-zinc-900/50 border-zinc-700 text-zinc-500 hover:border-zinc-500 hover:text-zinc-300'
+              }`}
+              title="Deep Optimization Mode (Double-pass Critique)"
+            >
+              <BrainCircuit size={14} className={`transition-colors ${isDeepMode ? 'text-purple-400' : 'text-zinc-600 group-hover:text-zinc-400'}`} />
+              <span className="text-xs font-medium">Deep Mode</span>
+              <div className={`w-2 h-2 rounded-full transition-colors ${isDeepMode ? 'bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]' : 'bg-zinc-700'}`} />
+            </button>
+            
+            {/* Contextual Alert/Tag */}
+            <div className="hidden md:flex flex-col justify-center">
+               <span className="text-[10px] font-medium text-purple-400 uppercase tracking-wider leading-none mb-0.5">Beta</span>
+               <span className="text-[10px] text-zinc-500 leading-none">Enable to trigger an auto-critique loop</span>
+            </div>
+          </div>
         </div>
         
         <div className="flex items-center space-x-4">
@@ -92,6 +102,7 @@ export default function App() {
                 onOptimize={() => handleOptimization(optimizedPrompt)}
                 isLoading={isLoading}
                 isDeepMode={isDeepMode}
+                generationId={generationId}
             />
         </div>
 

@@ -18,7 +18,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - Use "Custom Instructions" persona format.
       - Explicitly request "No yapping" for concise answers.
     `,
-    sources: [{ title: 'GPT-5 System Card', url: 'https://openai.com/' }]
+    sources: [{ title: 'Prompt Engineering Guide', url: 'https://platform.openai.com/docs/guides/prompt-engineering' }]
   },
   {
     id: TargetModelId.O3_PRO,
@@ -47,7 +47,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - Structured input (JSON/XML) works best.
       - Keep instructions short and imperative.
     `,
-    sources: [{ title: 'OpenAI Efficiency', url: 'https://openai.com/' }]
+    sources: [{ title: 'Model Capabilities', url: 'https://platform.openai.com/docs/models' }]
   },
   {
     id: TargetModelId.GPT_5_MINI,
@@ -61,7 +61,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - Use JSON Schema for structured data extraction.
       - Set temperature to 0 for deterministic tasks.
     `,
-    sources: [{ title: 'OpenAI API Docs', url: 'https://platform.openai.com/' }]
+    sources: [{ title: 'Structured Output Docs', url: 'https://platform.openai.com/docs/guides/structured-outputs' }]
   },
 
   // ==================================================================================
@@ -81,7 +81,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - Assign a role via System Prompt.
       - Chain-of-Thought: Ask it to "Think inside <antThinking> tags".
     `,
-    sources: [{ title: 'Claude Prompt Engineering', url: 'https://docs.anthropic.com/' }]
+    sources: [{ title: 'Prompt Engineering Overview', url: 'https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview' }]
   },
   {
     id: TargetModelId.CLAUDE_OPUS_4_5,
@@ -95,7 +95,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - "Prefill" the response by ending your prompt with the start of the desired output (e.g., "{").
       - Be extremely verbose about edge cases.
     `,
-    sources: [{ title: 'Prefill Strategies', url: 'https://docs.anthropic.com/' }]
+    sources: [{ title: 'Prefill Strategies', url: 'https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response' }]
   },
 
   // ==================================================================================
@@ -115,7 +115,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - Explicitly ask for "Grounding" if you need factual verification.
       - Use "System Instructions" for role definition.
     `,
-    sources: [{ title: 'Gemini 3 Technical Report', url: 'https://deepmind.google/technologies/gemini/' }]
+    sources: [{ title: 'Prompting Strategies', url: 'https://ai.google.dev/gemini-api/docs/prompting-strategies' }]
   },
   {
     id: TargetModelId.GEMINI_3_FLASH,
@@ -129,7 +129,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - Imperative commands. Remove "please".
       - Few-shot prompting (3-5 examples) drastically improves reliability.
     `,
-    sources: [{ title: 'Gemini API', url: 'https://ai.google.dev/' }]
+    sources: [{ title: 'System Instructions', url: 'https://ai.google.dev/gemini-api/docs/system-instructions' }]
   },
 
   // ==================================================================================
@@ -148,7 +148,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - Reference specific Microsoft 365 apps if needed (e.g., "Format for Word").
       - Use "Balanced" mode instructions for creative writing.
     `,
-    sources: [{ title: 'Copilot Lab', url: 'https://copilot.microsoft.com/' }]
+    sources: [{ title: 'Copilot Prompting Guide', url: 'https://support.microsoft.com/en-us/topic/learn-about-copilot-prompts-f6c3b467-f07c-4016-b339-378196f78e16' }]
   },
 
   // ==================================================================================
@@ -167,7 +167,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - Zero-shot only for logic. Do not provide examples.
       - Enforce output format (e.g., "Answer in <answer> block").
     `,
-    sources: [{ title: 'DeepSeek R1 Paper', url: 'https://github.com/deepseek-ai/DeepSeek-R1' }]
+    sources: [{ title: 'Reasoning Model Guide', url: 'https://api-docs.deepseek.com/guides/reasoning_model' }]
   },
   {
     id: TargetModelId.GROK_4,
@@ -181,7 +181,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - Specify "Fun Mode" vs "Normal Mode".
       - Ask for real-time tweets/posts as context.
     `,
-    sources: [{ title: 'xAI Blog', url: 'https://x.ai/' }]
+    sources: [{ title: 'xAI Help Center', url: 'https://help.x.ai/' }]
   },
   {
     id: TargetModelId.MISTRAL_LARGE_3,
@@ -195,7 +195,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - Strong instruction following.
       - Prefers concise prompts.
     `,
-    sources: [{ title: 'Mistral Docs', url: 'https://docs.mistral.ai/' }]
+    sources: [{ title: 'Prompting Capabilities', url: 'https://docs.mistral.ai/guides/prompting_capabilities/' }]
   },
   {
     id: TargetModelId.LLAMA_4,
@@ -209,7 +209,7 @@ export const TARGET_MODELS: TargetModel[] = [
       - Use Llama-specific system tokens if running raw.
       - Chain-of-thought helps significantly with math.
     `,
-    sources: [{ title: 'Llama 4 Release', url: 'https://llama.meta.com/' }]
+    sources: [{ title: 'Llama Prompting Guide', url: 'https://www.llama.com/docs/how-to-guide/prompting/' }]
   }
 ];
 

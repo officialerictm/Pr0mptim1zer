@@ -8,16 +8,20 @@ interface FloatingInputProps {
 
 export const FloatingInput: React.FC<FloatingInputProps> = ({ onSubmit, isLoading }) => {
   const [text, setText] = useState('');
+  const [isShaking, setIsShaking] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = () => {
-    if (text.trim() && !isLoading) {
-      onSubmit(text);
-      setText(''); // Optional: clear after submit, or keep it? OpenAI clears it.
-      if (textareaRef.current) {
-        textareaRef.current.style.height = 'auto'; // Reset height
-      }
+    if (isLoading) return;
+
+    if (!text.trim()) {
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
+      return;
     }
+
+    onSubmit(text);
+    setText('');
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -37,7 +41,20 @@ export const FloatingInput: React.FC<FloatingInputProps> = ({ onSubmit, isLoadin
 
   return (
     <div className="w-full max-w-3xl mx-auto mb-6 px-4">
-      <div className="relative bg-surface border border-zinc-700 rounded-2xl shadow-2xl overflow-hidden focus-within:ring-1 focus-within:ring-zinc-500 transition-all">
+      <style>{`
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+          20%, 40%, 60%, 80% { transform: translateX(4px); }
+        }
+        .animate-shake {
+          animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+      `}</style>
+      
+      <div className={`relative bg-surface border rounded-2xl shadow-2xl overflow-hidden transition-all duration-200 
+        ${isShaking ? 'border-red-500/50 animate-shake ring-1 ring-red-500/20' : 'border-zinc-700 focus-within:ring-1 focus-within:ring-zinc-500'}
+      `}>
         <textarea
           ref={textareaRef}
           value={text}
@@ -51,12 +68,15 @@ export const FloatingInput: React.FC<FloatingInputProps> = ({ onSubmit, isLoadin
         <div className="absolute right-2 bottom-2">
           <button
             onClick={handleSubmit}
-            disabled={!text.trim() || isLoading}
+            disabled={isLoading}
             className={`p-2 rounded-xl flex items-center justify-center transition-all duration-200 ${
               text.trim() && !isLoading
-                ? 'bg-white text-black hover:bg-zinc-200'
-                : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                ? 'bg-white text-black hover:bg-zinc-200 shadow-md transform hover:scale-105 active:scale-95'
+                : isLoading 
+                    ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                    : 'bg-zinc-800 text-zinc-600 hover:bg-zinc-700 cursor-pointer' 
             }`}
+            title={!text.trim() ? "Please enter a prompt" : "Optimize"}
           >
             {isLoading ? (
               <Loader2 size={18} className="animate-spin" />

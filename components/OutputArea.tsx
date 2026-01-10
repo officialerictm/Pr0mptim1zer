@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, Save, Sparkles, Loader2, ExternalLink, BrainCircuit } from 'lucide-react';
+import { Copy, Check, Save, Sparkles, Loader2, ExternalLink, BrainCircuit, MessageSquareText } from 'lucide-react';
 import { TARGET_MODELS } from '../constants';
 
 interface OutputAreaProps {
@@ -10,6 +10,7 @@ interface OutputAreaProps {
   onOptimize: () => void;
   isLoading: boolean;
   isDeepMode: boolean;
+  generationId?: number;
 }
 
 export const OutputArea: React.FC<OutputAreaProps> = ({ 
@@ -19,17 +20,26 @@ export const OutputArea: React.FC<OutputAreaProps> = ({
   targetModelName,
   onOptimize,
   isLoading,
-  isDeepMode
+  isDeepMode,
+  generationId = 0
 }) => {
-  const [copied, setCopied] = useState(false);
+  const [copiedPrompt, setCopiedPrompt] = useState(false);
+  const [copiedExplanation, setCopiedExplanation] = useState(false);
 
   // Find the full model object to access sources
   const currentModel = TARGET_MODELS.find(m => m.name === targetModelName);
 
-  const handleCopy = async () => {
+  const handleCopyPrompt = async () => {
     await navigator.clipboard.writeText(prompt);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setCopiedPrompt(true);
+    setTimeout(() => setCopiedPrompt(false), 2000);
+  };
+
+  const handleCopyExplanation = async () => {
+    if (!explanation) return;
+    await navigator.clipboard.writeText(explanation);
+    setCopiedExplanation(true);
+    setTimeout(() => setCopiedExplanation(false), 2000);
   };
 
   const handleDownload = () => {
@@ -64,6 +74,25 @@ export const OutputArea: React.FC<OutputAreaProps> = ({
 
   return (
     <div className="flex flex-col h-full w-full max-w-5xl mx-auto pt-4 pb-4 px-4 sm:px-8">
+      {/* Animation Styles */}
+      <style>{`
+        @keyframes slideUpFade {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-result {
+          animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes borderPulse {
+          0% { border-color: rgba(168, 85, 247, 0.3); box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+          50% { border-color: rgba(168, 85, 247, 0.6); box-shadow: 0 0 15px 1px rgba(168, 85, 247, 0.15); }
+          100% { border-color: rgba(168, 85, 247, 0.3); box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+        }
+        .deep-mode-active {
+          animation: borderPulse 3s infinite ease-in-out;
+        }
+      `}</style>
+
       {/* Header Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4 sm:gap-0">
         <div className="flex flex-col">
@@ -71,20 +100,18 @@ export const OutputArea: React.FC<OutputAreaProps> = ({
             Editor <span className="text-zinc-600 px-2">•</span> <span className={`font-semibold ${currentModel?.color || 'text-zinc-200'}`}>{targetModelName}</span>
             </div>
             {currentModel && currentModel.sources && currentModel.sources.length > 0 && (
-            <div className="text-[10px] text-zinc-600 mt-1 flex flex-wrap items-center gap-1">
-                Optimization parameters derived from
+            <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                <span className="text-[10px] font-semibold text-zinc-600 uppercase tracking-wider">Source:</span>
                 {currentModel.sources.map((source, index) => (
-                    <React.Fragment key={index}>
-                        {index > 0 && <span>,</span>}
-                        <a 
-                            href={source.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="text-zinc-500 hover:text-zinc-300 hover:underline flex items-center gap-0.5 ml-1 transition-colors"
-                        >
-                            {source.title} <ExternalLink size={8} />
-                        </a>
-                    </React.Fragment>
+                    <a 
+                        key={index}
+                        href={source.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-1 bg-zinc-900 border border-zinc-800 hover:border-zinc-600 hover:bg-zinc-800 text-[10px] text-zinc-500 hover:text-zinc-300 px-2 py-0.5 rounded-full transition-all duration-200"
+                    >
+                        {source.title} <ExternalLink size={8} className="opacity-50 group-hover:opacity-100" />
+                    </a>
                 ))}
             </div>
             )}
@@ -109,11 +136,20 @@ export const OutputArea: React.FC<OutputAreaProps> = ({
             <div className="h-4 w-px bg-zinc-700 mx-1"></div>
 
             <button 
-                onClick={handleCopy}
-                className="flex items-center space-x-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-md text-sm transition-colors"
-                title="Copy to clipboard"
+                onClick={handleCopyExplanation}
+                disabled={!explanation}
+                className={`flex items-center space-x-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-md text-sm transition-colors ${!explanation ? 'opacity-50 cursor-not-allowed' : ''}`}
+                title="Copy explanation"
             >
-                {copied ? <Check size={14} /> : <Copy size={14} />}
+                {copiedExplanation ? <Check size={14} /> : <MessageSquareText size={14} />}
+            </button>
+
+            <button 
+                onClick={handleCopyPrompt}
+                className="flex items-center space-x-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-md text-sm transition-colors"
+                title="Copy prompt"
+            >
+                {copiedPrompt ? <Check size={14} /> : <Copy size={14} />}
             </button>
              <button 
                 onClick={handleDownload}
@@ -127,23 +163,40 @@ export const OutputArea: React.FC<OutputAreaProps> = ({
       </div>
 
       {/* Main Editor */}
-      <div className="flex-grow relative bg-surface border border-zinc-800 rounded-lg overflow-hidden flex flex-col shadow-inner focus-within:ring-1 focus-within:ring-zinc-700 transition-all">
-        {explanation && (
-             <div className={`border-b px-4 py-2 text-xs font-mono transition-colors ${
-                 isDeepMode 
-                 ? 'bg-purple-900/20 border-purple-900/50 text-purple-300' 
-                 : 'bg-emerald-900/20 border-emerald-900/50 text-emerald-400'
-             }`}>
-                {explanation}
-             </div>
-        )}
-        <textarea
-          value={prompt}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full h-full bg-transparent p-6 text-zinc-200 font-mono text-sm sm:text-base resize-none focus:outline-none leading-relaxed placeholder-zinc-600"
-          placeholder={`Paste your prompt here, add any specific instructions, then click "${isDeepMode ? 'Deep Optimize' : 'Optimize'}" above.\n\nOr use the bar below to describe a new use case from scratch.`}
-          spellCheck={false}
-        />
+      <div className={`
+        flex-grow relative rounded-xl overflow-hidden flex flex-col transition-all duration-500 border
+        ${isDeepMode 
+          ? 'bg-[#0e0e11] border-purple-500/30 deep-mode-active' 
+          : 'bg-[#121214] border-zinc-800 focus-within:border-zinc-700 focus-within:shadow-2xl shadow-lg'
+        }
+      `}>
+        <div 
+           key={generationId} 
+           className={`flex flex-col h-full w-full ${generationId > 0 ? 'animate-result' : ''}`}
+        >
+          {explanation && (
+              <div className={`border-b px-5 py-3 text-xs font-mono transition-colors flex items-start gap-2 ${
+                  isDeepMode 
+                  ? 'bg-purple-900/10 border-purple-500/20 text-purple-300' 
+                  : 'bg-emerald-900/10 border-emerald-500/20 text-emerald-400'
+              }`}>
+                  <div className="shrink-0 mt-0.5">
+                     {isDeepMode ? <BrainCircuit size={12} /> : <Sparkles size={12} />}
+                  </div>
+                  <span className="leading-relaxed">{explanation}</span>
+              </div>
+          )}
+          <textarea
+            value={prompt}
+            onChange={(e) => onChange(e.target.value)}
+            className={`
+                w-full h-full bg-transparent p-6 text-zinc-100 font-mono text-sm sm:text-base resize-none focus:outline-none leading-loose placeholder-zinc-700
+                ${isDeepMode ? 'selection:bg-purple-500/30 selection:text-purple-100' : 'selection:bg-emerald-500/30 selection:text-emerald-100'}
+            `}
+            placeholder={`Paste your prompt here, add any specific instructions, then click "${isDeepMode ? 'Deep Optimize' : 'Optimize'}" above.\n\nOr use the bar below to describe a new use case from scratch.`}
+            spellCheck={false}
+          />
+        </div>
       </div>
     </div>
   );
