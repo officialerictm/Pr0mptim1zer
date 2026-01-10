@@ -1,55 +1,80 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pr0mptim1zer</title>
+    <title>Promptimizer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Editorial Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;500;600&display=swap" rel="stylesheet">
+
     <script>
       tailwind.config = {
-        darkMode: 'class',
         theme: {
           extend: {
             colors: {
-              background: '#09090b', // zinc-950
-              surface: '#18181b',    // zinc-900
-              border: '#27272a',     // zinc-800
-              primary: '#fafafa',    // zinc-50
-              secondary: '#a1a1aa',  // zinc-400
+              paper: '#faf9f6',
+              ink: '#1a1a1a',
+              subtle: '#4a4a4a',
+              muted: '#888888',
+              line: '#e5e5e5',
             },
             fontFamily: {
-              mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
-              sans: ['Inter', 'system-ui', 'sans-serif'],
+              serif: ['"Source Serif 4"', 'serif'],
+              sans: ['"IBM Plex Sans"', 'sans-serif'],
+            },
+            boxShadow: {
+              'soft': '0 2px 8px rgba(0,0,0,0.04)',
             }
           }
         }
       }
     </script>
     <script>
-      // Polyfill process.env for browser environments to prevent ReferenceErrors on deployment
+      // Polyfill process.env for browser environments
       if (typeof process === 'undefined') {
         window.process = { env: {} };
       }
     </script>
     <style>
       body {
-        background-color: #09090b;
-        color: #fafafa;
+        background-color: #faf9f6;
+        color: #1a1a1a;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
-      /* Custom Scrollbar for a cleaner look */
+      
+      /* Editorial Focus Ring */
+      textarea:focus, input:focus, button:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px #e5e5e5, 0 0 0 4px #1a1a1a;
+      }
+
+      /* Subtle Scrollbar */
       ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+        width: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: #09090b; 
+        background: transparent;
       }
       ::-webkit-scrollbar-thumb {
-        background: #27272a; 
-        border-radius: 4px;
+        background: #e5e5e5;
+        border-radius: 3px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #3f3f46; 
+        background: #d4d4d4;
+      }
+
+      /* Animation Utility */
+      @keyframes enter {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-enter {
+        animation: enter 0.4s cubic-bezier(0.2, 0.0, 0.2, 1) forwards;
       }
     </style>
   <script type="importmap">
