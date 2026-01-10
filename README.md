@@ -78,7 +78,7 @@ git push -u origin main
 
 1. Go to **Site settings** → **Environment variables**
 2. Add a new variable:
-   - **Key:** `API_KEY`
+   - **Key:** `VITE_API_KEY`
    - **Value:** Your Gemini API key
 3. Trigger a redeploy: **Deploys** → **Trigger deploy** → **Deploy site**
 
