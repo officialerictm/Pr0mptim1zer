@@ -84,12 +84,12 @@ git push -u origin main
 
 ### 4. Custom Domain Setup
 
-To use `prompt.ericmartin.ai`:
+To use `prompt.your-site-name.ai`:
 
 **In Netlify:**
 1. Go to **Site settings** → **Domain management**
 2. Click **"Add custom domain"**
-3. Enter `prompt.ericmartin.ai`
+3. Enter `prompt.your-site-name.ai`
 4. Netlify will show you the required DNS records
 
 **In your DNS provider:**
