@@ -7,8 +7,8 @@ export const optimizePrompt = async (
   targetModelId: TargetModelId,
   isDeepMode: boolean = false
 ): Promise<OptimizationResponse> => {
-  if (!process.env.API_KEY) {
-    throw new Error("API Key is missing. Please set the API_KEY environment variable.");
+  if (!import.meta.env.VITE_API_KEY) {
+    throw new Error("API Key is missing. Please set the VITE_API_KEY environment variable.");
   }
 
   // Find the target model details to get its specific best practices
@@ -16,7 +16,7 @@ export const optimizePrompt = async (
   const bestPractices = targetModel?.bestPractices || "Use general advanced prompt engineering best practices.";
   const modelName = targetModel?.name || targetModelId;
 
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
   const modelId = "gemini-3-pro-preview"; // The brain of the operation
 
   // --- PASS 1: Initial Generation ---
