@@ -1,221 +1,216 @@
 import { TargetModel, TargetModelId } from './types';
 
 export const TARGET_MODELS: TargetModel[] = [
-  // --- Google (Gemini Advanced) ---
+  // ==================================================================================
+  // OPENAI
+  // ==================================================================================
   {
-    id: TargetModelId.GEMINI_3_DEEP_THINK,
-    name: 'Gemini 3 Deep Think',
-    provider: 'Google',
-    category: 'Google',
-    description: 'Complex hypothesis exploration & problem solving.',
-    color: 'text-blue-400',
-    bestPractices: `
-      - Do NOT provide solution steps; the model explores multiple hypotheses automatically.
-      - State the problem clearly and ask for a "comprehensive exploration of alternatives" before the final answer.
-      - Use <context> tags to provide massive amounts of background data; it handles 5M+ tokens effectively.
-    `,
-    sources: [
-      { title: 'Gemini 3 Technical Report', url: 'https://deepmind.google/technologies/gemini/flash/' },
-      { title: 'System Instructions Guide', url: 'https://ai.google.dev/gemini-api/docs/system-instructions' }
-    ]
-  },
-  {
-    id: TargetModelId.GEMINI_3_PRO,
-    name: 'Gemini 3 Pro',
-    provider: 'Google',
-    category: 'Google',
-    description: 'Frontier multimodal model (Text, Code, AV).',
-    color: 'text-blue-500',
-    bestPractices: `
-      - Use standard structured prompting (Role, Context, Task).
-      - For multimodal inputs, explicitly reference image/video timestamps in the text prompt.
-      - Use "System Instruction" formatting for behavioral constraints.
-    `,
-    sources: [
-      { title: 'Gemini Prompting Strategies', url: 'https://ai.google.dev/gemini-api/docs/prompting-strategies' }
-    ]
-  },
-  {
-    id: TargetModelId.GEMINI_3_FLASH,
-    name: 'Gemini 3 Flash',
-    provider: 'Google',
-    category: 'Google',
-    description: 'High-speed, massive context window.',
-    color: 'text-yellow-400',
-    bestPractices: `
-      - Direct, imperative commands work best.
-      - Reduce politeness/padding to save tokens and reduce latency.
-      - Use JSON schemas for data extraction tasks.
-    `,
-    sources: [
-      { title: 'Long Context Best Practices', url: 'https://ai.google.dev/gemini-api/docs/long-context' }
-    ]
-  },
-
-  // --- OpenAI (ChatGPT Plus) ---
-  {
-    id: TargetModelId.GPT_5_2_THINKING,
-    name: 'GPT-5.2 (Thinking)',
+    id: TargetModelId.GPT_5_2,
+    name: 'GPT-5.2',
+    brand: 'ChatGPT',
+    isDefault: true,
     provider: 'OpenAI',
-    category: 'OpenAI',
-    description: 'Flagship reasoning & deep research.',
-    color: 'text-purple-400',
+    mode: 'chat',
+    description: 'Flagship. High intelligence, natural conversation.',
+    color: 'text-emerald-400',
     bestPractices: `
-      - Strictly forbidden: "Think step by step" or "Chain of thought" instructions. The model does this internally.
-      - Focus entirely on defining the *success criteria* and the *constraints*.
-      - For research, specify the "depth" of citation required (e.g., "academic level").
+      - Conversational tone preferred.
+      - Use "Custom Instructions" persona format.
+      - Explicitly request "No yapping" for concise answers.
     `,
-    sources: [
-      { title: 'Reasoning Model Beta Docs', url: 'https://platform.openai.com/docs/guides/reasoning' },
-      { title: 'GPT-5 System Card', url: 'https://openai.com/index/gpt-5-system-card' }
-    ]
-  },
-  {
-    id: TargetModelId.GPT_5_2_INSTANT,
-    name: 'GPT-5.2 (Instant)',
-    provider: 'OpenAI',
-    category: 'OpenAI',
-    description: 'High-speed general purpose.',
-    color: 'text-green-400',
-    bestPractices: `
-      - Use the CO-STAR framework (Context, Objective, Style, Tone, Audience, Response).
-      - Break complex instructions into numbered lists.
-      - Explicitly ask for "conciseness" to override its tendency to be verbose.
-    `,
-    sources: [
-      { title: 'Prompt Engineering Guide', url: 'https://platform.openai.com/docs/guides/prompt-engineering' }
-    ]
-  },
-  {
-    id: TargetModelId.GPT_4_1,
-    name: 'GPT-4.1',
-    provider: 'OpenAI',
-    category: 'OpenAI',
-    description: 'Optimized for coding & instruction following.',
-    color: 'text-green-500',
-    bestPractices: `
-      - Provide specific library versions when asking for code (e.g., "React 19").
-      - Use "Role-play" prompting to set the expertise level (e.g., "Senior Systems Architect").
-    `,
-    sources: [
-      { title: 'OpenAI Cookbook', url: 'https://cookbook.openai.com/' }
-    ]
+    sources: [{ title: 'GPT-5 System Card', url: 'https://openai.com/' }]
   },
   {
     id: TargetModelId.O3_PRO,
     name: 'o3-pro',
+    brand: 'ChatGPT',
     provider: 'OpenAI',
-    category: 'OpenAI',
-    description: 'Advanced science, math, and coding.',
-    color: 'text-indigo-400',
+    mode: 'chat',
+    description: 'Deep reasoning & research tasks.',
+    color: 'text-emerald-300',
     bestPractices: `
-      - Provide raw data or equations directly; do not simplify inputs.
-      - Do not use conversational filler.
-      - Specify the output format strictly (e.g., "Latex", "Python script only").
+      - Do NOT use "Think step by step" (it does this natively).
+      - Define the output format clearly (e.g., "Report with Executive Summary").
+      - Allow it to "browse" for verification.
     `,
-    sources: [
-      { title: 'o3-pro Release Notes', url: 'https://openai.com/index/o3-pro-release' }
-    ]
+    sources: [{ title: 'Reasoning Best Practices', url: 'https://platform.openai.com/docs/guides/reasoning' }]
+  },
+  {
+    id: TargetModelId.O4_MINI,
+    name: 'o4-mini',
+    brand: 'ChatGPT',
+    provider: 'OpenAI',
+    mode: 'chat',
+    description: 'Fast reasoning for logic puzzles/math.',
+    color: 'text-emerald-200',
+    bestPractices: `
+      - Structured input (JSON/XML) works best.
+      - Keep instructions short and imperative.
+    `,
+    sources: [{ title: 'OpenAI Efficiency', url: 'https://openai.com/' }]
+  },
+  {
+    id: TargetModelId.GPT_5_MINI,
+    name: 'GPT-5 mini',
+    brand: 'ChatGPT',
+    provider: 'OpenAI',
+    mode: 'api',
+    description: 'Cost-effective API endpoint.',
+    color: 'text-emerald-500',
+    bestPractices: `
+      - Use JSON Schema for structured data extraction.
+      - Set temperature to 0 for deterministic tasks.
+    `,
+    sources: [{ title: 'OpenAI API Docs', url: 'https://platform.openai.com/' }]
   },
 
-  // --- Anthropic (Claude Pro) ---
-  {
-    id: TargetModelId.CLAUDE_OPUS_4_5,
-    name: 'Claude Opus 4.5',
-    provider: 'Anthropic',
-    category: 'Anthropic',
-    description: 'Agentic tasks, coding, and nuance.',
-    color: 'text-orange-300',
-    bestPractices: `
-      - MANDATORY: Use XML tags for everything (<context>, <goal>, <constraints>).
-      - "Prefill" the response by typing the first sentence for the model in the prompt.
-      - For agentic tasks, define the available "tools" in XML format even if they are hypothetical.
-    `,
-    sources: [
-      { title: 'Claude 4.5 System Prompts', url: 'https://docs.anthropic.com/en/docs/system-prompts' },
-      { title: 'Long Context Window Tips', url: 'https://docs.anthropic.com/en/docs/long-context-window-tips' }
-    ]
-  },
+  // ==================================================================================
+  // ANTHROPIC
+  // ==================================================================================
   {
     id: TargetModelId.CLAUDE_SONNET_4_5,
-    name: 'Claude Sonnet 4.5',
+    name: 'Claude 4.5 Sonnet',
+    brand: 'Claude',
+    isDefault: true,
     provider: 'Anthropic',
-    category: 'Anthropic',
-    description: 'Balanced daily driver.',
+    mode: 'chat',
+    description: 'Balanced intelligence & speed. Coding powerhouse.',
     color: 'text-orange-400',
     bestPractices: `
-      - Use XML tags for structure.
-      - Ask Claude to "Think inside <antThinking> tags" before answering to improve logic.
-      - Be explicit about tone (e.g., "Professional but conversational").
+      - Use XML tags (<context>, <instruction>) to structure prompt.
+      - Assign a role via System Prompt.
+      - Chain-of-Thought: Ask it to "Think inside <antThinking> tags".
     `,
-    sources: [
-      { title: 'Prompt Engineering Interactive Tutorial', url: 'https://github.com/anthropics/prompt-eng-interactive-tutorial' }
-    ]
+    sources: [{ title: 'Claude Prompt Engineering', url: 'https://docs.anthropic.com/' }]
   },
   {
-    id: TargetModelId.CLAUDE_3_7_SONNET_REASONING,
-    name: 'Claude 3.7 Sonnet (Reasoning)',
+    id: TargetModelId.CLAUDE_OPUS_4_5,
+    name: 'Claude 4.5 Opus',
+    brand: 'Claude',
     provider: 'Anthropic',
-    category: 'Anthropic',
-    description: 'User-controlled reasoning depth.',
-    color: 'text-orange-500',
+    mode: 'api',
+    description: 'Maximum intelligence, slower inference.',
+    color: 'text-orange-300',
     bestPractices: `
-      - Explicitly state the "Reasoning Budget" in the prompt (e.g., "Spend significant time analyzing X").
-      - Use the Chain of Density prompt technique to refine summaries recursively.
+      - "Prefill" the response by ending your prompt with the start of the desired output (e.g., "{").
+      - Be extremely verbose about edge cases.
     `,
-    sources: [
-      { title: 'Claude 3.7 Model Card', url: 'https://www.anthropic.com/news/claude-3-7-sonnet' }
-    ]
+    sources: [{ title: 'Prefill Strategies', url: 'https://docs.anthropic.com/' }]
   },
 
-  // --- xAI (Grok) ---
+  // ==================================================================================
+  // GOOGLE
+  // ==================================================================================
   {
-    id: TargetModelId.GROK_4_1_THINKING,
-    name: 'Grok 4.1 (Thinking)',
-    provider: 'xAI',
-    category: 'xAI',
-    description: 'Logic puzzles and deep queries.',
-    color: 'text-white',
+    id: TargetModelId.GEMINI_3_PRO,
+    name: 'Gemini 3 Pro',
+    brand: 'Gemini',
+    isDefault: true,
+    provider: 'Google',
+    mode: 'chat',
+    description: 'Complex multimodal tasks.',
+    color: 'text-blue-400',
     bestPractices: `
-      - Challenge the model; it responds well to being told "This is a difficult problem."
-      - Do not restrict its "personality" unless necessary for a formal output.
-      - Allow it to access "real-time" concepts in the prompt logic.
+      - Place instructions *after* large context/documents.
+      - Explicitly ask for "Grounding" if you need factual verification.
+      - Use "System Instructions" for role definition.
     `,
-    sources: [
-      { title: 'Grok-4 Technical Blog', url: 'https://x.ai/blog/grok-4' }
-    ]
+    sources: [{ title: 'Gemini 3 Technical Report', url: 'https://deepmind.google/technologies/gemini/' }]
+  },
+  {
+    id: TargetModelId.GEMINI_3_FLASH,
+    name: 'Gemini 3 Flash',
+    brand: 'Gemini',
+    provider: 'Google',
+    mode: 'api',
+    description: 'High volume, low latency.',
+    color: 'text-blue-300',
+    bestPractices: `
+      - Imperative commands. Remove "please".
+      - Few-shot prompting (3-5 examples) drastically improves reliability.
+    `,
+    sources: [{ title: 'Gemini API', url: 'https://ai.google.dev/' }]
+  },
+
+  // ==================================================================================
+  // MICROSOFT
+  // ==================================================================================
+  {
+    id: TargetModelId.COPILOT_PRO,
+    name: 'Copilot Pro',
+    brand: 'Copilot',
+    isDefault: true,
+    provider: 'Microsoft',
+    mode: 'chat',
+    description: 'Office 365 & Web integration.',
+    color: 'text-indigo-400',
+    bestPractices: `
+      - Reference specific Microsoft 365 apps if needed (e.g., "Format for Word").
+      - Use "Balanced" mode instructions for creative writing.
+    `,
+    sources: [{ title: 'Copilot Lab', url: 'https://copilot.microsoft.com/' }]
+  },
+
+  // ==================================================================================
+  // OTHERS
+  // ==================================================================================
+  {
+    id: TargetModelId.DEEPSEEK_R1,
+    name: 'DeepSeek R1',
+    brand: 'Other',
+    isDefault: true,
+    provider: 'DeepSeek',
+    mode: 'chat',
+    description: 'Open-weights reasoning model.',
+    color: 'text-cyan-400',
+    bestPractices: `
+      - Zero-shot only for logic. Do not provide examples.
+      - Enforce output format (e.g., "Answer in <answer> block").
+    `,
+    sources: [{ title: 'DeepSeek R1 Paper', url: 'https://github.com/deepseek-ai/DeepSeek-R1' }]
   },
   {
     id: TargetModelId.GROK_4,
     name: 'Grok 4',
+    brand: 'Other',
     provider: 'xAI',
-    category: 'xAI',
-    description: 'Real-time data & uninhibited mode.',
-    color: 'text-zinc-300',
+    mode: 'chat',
+    description: 'Real-time X data access.',
+    color: 'text-zinc-200',
     bestPractices: `
-      - Specify "Fun Mode" vs "Regular Mode" explicitly.
-      - If asking about news, specify "Search X for the latest updates on...".
-      - It tolerates more casual/slang-heavy prompting than other models.
+      - Specify "Fun Mode" vs "Normal Mode".
+      - Ask for real-time tweets/posts as context.
     `,
-    sources: [
-      { title: 'xAI API Documentation', url: 'https://docs.x.ai/' }
-    ]
+    sources: [{ title: 'xAI Blog', url: 'https://x.ai/' }]
   },
   {
-    id: TargetModelId.GROK_3_MINI,
-    name: 'Grok 3 Mini',
-    provider: 'xAI',
-    category: 'xAI',
-    description: 'Lightweight & fast.',
-    color: 'text-zinc-400',
+    id: TargetModelId.MISTRAL_LARGE_3,
+    name: 'Mistral Large 3',
+    brand: 'Other',
+    provider: 'Mistral',
+    mode: 'api',
+    description: 'European flagship, strong multi-lingual.',
+    color: 'text-yellow-400',
     bestPractices: `
-      - Keep prompts short and to the point.
-      - Avoid complex multi-step reasoning instructions; break them into separate prompts.
+      - Strong instruction following.
+      - Prefers concise prompts.
     `,
-    sources: [
-      { title: 'Grok-3 Release Announcement', url: 'https://x.ai/blog/grok-3' }
-    ]
+    sources: [{ title: 'Mistral Docs', url: 'https://docs.mistral.ai/' }]
   },
+  {
+    id: TargetModelId.LLAMA_4,
+    name: 'Llama 4',
+    brand: 'Other',
+    provider: 'Meta',
+    mode: 'api',
+    description: 'Open source standard.',
+    color: 'text-blue-500',
+    bestPractices: `
+      - Use Llama-specific system tokens if running raw.
+      - Chain-of-thought helps significantly with math.
+    `,
+    sources: [{ title: 'Llama 4 Release', url: 'https://llama.meta.com/' }]
+  }
 ];
 
 export const DEFAULT_SYSTEM_INSTRUCTION = `You are Pr0mptim1zer, an expert prompt engineer and LLM architect. 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, Save, Sparkles, Loader2, ExternalLink } from 'lucide-react';
+import { Copy, Check, Save, Sparkles, Loader2, ExternalLink, BrainCircuit } from 'lucide-react';
 import { TARGET_MODELS } from '../constants';
 
 interface OutputAreaProps {
@@ -9,6 +9,7 @@ interface OutputAreaProps {
   targetModelName: string;
   onOptimize: () => void;
   isLoading: boolean;
+  isDeepMode: boolean;
 }
 
 export const OutputArea: React.FC<OutputAreaProps> = ({ 
@@ -17,7 +18,8 @@ export const OutputArea: React.FC<OutputAreaProps> = ({
   onChange, 
   targetModelName,
   onOptimize,
-  isLoading
+  isLoading,
+  isDeepMode
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -52,6 +54,14 @@ export const OutputArea: React.FC<OutputAreaProps> = ({
     URL.revokeObjectURL(url);
   };
 
+  // Dynamic button styles based on Deep Mode
+  const buttonBaseClass = "flex items-center space-x-2 px-4 py-1.5 rounded-md text-sm font-medium transition-all shadow-sm";
+  const buttonActiveState = isDeepMode 
+    ? 'bg-purple-600 hover:bg-purple-500 text-white shadow-purple-900/20' 
+    : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-900/20';
+    
+  const buttonDisabledState = 'bg-zinc-800 text-zinc-500 cursor-not-allowed';
+
   return (
     <div className="flex flex-col h-full w-full max-w-5xl mx-auto pt-4 pb-4 px-4 sm:px-8">
       {/* Header Actions */}
@@ -84,14 +94,16 @@ export const OutputArea: React.FC<OutputAreaProps> = ({
             <button
               onClick={onOptimize}
               disabled={!prompt.trim() || isLoading}
-              className={`flex items-center space-x-2 px-4 py-1.5 rounded-md text-sm font-medium transition-all shadow-sm
-                ${!prompt.trim() || isLoading 
-                  ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed' 
-                  : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-900/20'
-                }`}
+              className={`${buttonBaseClass} ${!prompt.trim() || isLoading ? buttonDisabledState : buttonActiveState}`}
             >
-               {isLoading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
-               <span>Optimize</span>
+               {isLoading ? (
+                  <Loader2 size={14} className="animate-spin" />
+               ) : isDeepMode ? (
+                  <BrainCircuit size={14} /> 
+               ) : (
+                  <Sparkles size={14} />
+               )}
+               <span>{isDeepMode ? 'Deep Optimize' : 'Optimize'}</span>
             </button>
 
             <div className="h-4 w-px bg-zinc-700 mx-1"></div>
@@ -117,15 +129,19 @@ export const OutputArea: React.FC<OutputAreaProps> = ({
       {/* Main Editor */}
       <div className="flex-grow relative bg-surface border border-zinc-800 rounded-lg overflow-hidden flex flex-col shadow-inner focus-within:ring-1 focus-within:ring-zinc-700 transition-all">
         {explanation && (
-             <div className="bg-emerald-900/20 border-b border-emerald-900/50 px-4 py-2 text-xs text-emerald-400 font-mono">
-                Running optimization: {explanation}
+             <div className={`border-b px-4 py-2 text-xs font-mono transition-colors ${
+                 isDeepMode 
+                 ? 'bg-purple-900/20 border-purple-900/50 text-purple-300' 
+                 : 'bg-emerald-900/20 border-emerald-900/50 text-emerald-400'
+             }`}>
+                {explanation}
              </div>
         )}
         <textarea
           value={prompt}
           onChange={(e) => onChange(e.target.value)}
           className="w-full h-full bg-transparent p-6 text-zinc-200 font-mono text-sm sm:text-base resize-none focus:outline-none leading-relaxed placeholder-zinc-600"
-          placeholder={`Paste your prompt here, add any specific instructions, then click "Optimize" above.\n\nOr use the bar below to describe a new use case from scratch.`}
+          placeholder={`Paste your prompt here, add any specific instructions, then click "${isDeepMode ? 'Deep Optimize' : 'Optimize'}" above.\n\nOr use the bar below to describe a new use case from scratch.`}
           spellCheck={false}
         />
       </div>
