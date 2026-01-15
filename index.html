@@ -13,21 +13,22 @@
 
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
-              paper: '#faf9f6',
-              ink: '#1a1a1a',
-              subtle: '#4a4a4a',
-              muted: '#888888',
-              line: '#e5e5e5',
+              background: '#09090b', // Zinc 950
+              surface: '#18181b',    // Zinc 900
+              border: '#27272a',     // Zinc 800
+              text: '#e4e4e7',       // Zinc 200
+              muted: '#a1a1aa',      // Zinc 400
             },
             fontFamily: {
               serif: ['"Source Serif 4"', 'serif'],
               sans: ['"IBM Plex Sans"', 'sans-serif'],
             },
-            boxShadow: {
-              'soft': '0 2px 8px rgba(0,0,0,0.04)',
+            animation: {
+              'in': 'enter 0.4s cubic-bezier(0.2, 0.0, 0.2, 1) forwards',
             }
           }
         }
@@ -41,8 +42,8 @@
     </script>
     <style>
       body {
-        background-color: #faf9f6;
-        color: #1a1a1a;
+        background-color: #09090b;
+        color: #e4e4e7;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
@@ -50,7 +51,7 @@
       /* Editorial Focus Ring */
       textarea:focus, input:focus, button:focus-visible {
         outline: none;
-        box-shadow: 0 0 0 2px #e5e5e5, 0 0 0 4px #1a1a1a;
+        box-shadow: 0 0 0 2px #27272a, 0 0 0 4px #09090b;
       }
 
       /* Subtle Scrollbar */
@@ -61,11 +62,11 @@
         background: transparent;
       }
       ::-webkit-scrollbar-thumb {
-        background: #e5e5e5;
+        background: #3f3f46;
         border-radius: 3px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #d4d4d4;
+        background: #52525b;
       }
 
       /* Animation Utility */
