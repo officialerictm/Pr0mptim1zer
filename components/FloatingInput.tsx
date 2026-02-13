@@ -1,5 +1,5 @@
 import React, { useState, KeyboardEvent, useRef, useEffect } from 'react';
-import { ArrowUp, Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 
 interface FloatingInputProps {
   onSubmit: (text: string) => void;
@@ -8,18 +8,11 @@ interface FloatingInputProps {
 
 export const FloatingInput: React.FC<FloatingInputProps> = ({ onSubmit, isLoading }) => {
   const [text, setText] = useState('');
-  const [isShaking, setIsShaking] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = () => {
-    if (isLoading) return;
-
-    if (!text.trim()) {
-      setIsShaking(true);
-      setTimeout(() => setIsShaking(false), 500);
-      return;
-    }
-
+    if (isLoading || !text.trim()) return;
     onSubmit(text);
     setText('');
   };
@@ -40,55 +33,49 @@ export const FloatingInput: React.FC<FloatingInputProps> = ({ onSubmit, isLoadin
   }, [text]);
 
   return (
-    <div className="w-full max-w-3xl mx-auto mb-6 px-4">
-      <style>{`
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-          20%, 40%, 60%, 80% { transform: translateX(4px); }
-        }
-        .animate-shake {
-          animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-        }
-      `}</style>
-      
-      <div className={`relative bg-surface border rounded-2xl shadow-2xl overflow-hidden transition-all duration-200 
-        ${isShaking ? 'border-red-500/50 animate-shake ring-1 ring-red-500/20' : 'border-zinc-700 focus-within:ring-1 focus-within:ring-zinc-500'}
-      `}>
+    <div className="w-full max-w-2xl mx-auto">
+      <div 
+        className={`
+          relative border-b transition-all duration-500 ease-out
+          ${isFocused ? 'border-sage' : 'border-border'}
+          ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
+        `}
+      >
         <textarea
           ref={textareaRef}
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Describe your use case, desired behavior, and issues..."
-          className="w-full bg-transparent text-zinc-200 placeholder-zinc-500 px-4 py-4 pr-12 text-base resize-none focus:outline-none max-h-[200px] overflow-y-auto font-sans"
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          placeholder="Describe your use case..."
+          className="w-full bg-transparent text-text placeholder-muted/50 px-0 py-4 text-xl sm:text-2xl font-sans font-light resize-none focus:outline-none max-h-[300px] overflow-y-auto"
           rows={1}
           disabled={isLoading}
         />
-        <div className="absolute right-2 bottom-2">
+        
+        <div className="absolute right-0 bottom-4">
           <button
             onClick={handleSubmit}
-            disabled={isLoading}
-            className={`p-2 rounded-xl flex items-center justify-center transition-all duration-200 ${
-              text.trim() && !isLoading
-                ? 'bg-white text-black hover:bg-zinc-200 shadow-md transform hover:scale-105 active:scale-95'
-                : isLoading 
-                    ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
-                    : 'bg-zinc-800 text-zinc-600 hover:bg-zinc-700 cursor-pointer' 
-            }`}
-            title={!text.trim() ? "Please enter a prompt" : "Optimize"}
+            disabled={isLoading || !text.trim()}
+            className={`
+              flex items-center gap-2 text-xs uppercase tracking-widest font-semibold transition-all duration-300
+              ${text.trim() && !isLoading ? 'text-sage hover:text-white translate-x-0' : 'text-border cursor-default translate-x-2 opacity-0'}
+            `}
           >
             {isLoading ? (
-              <Loader2 size={18} className="animate-spin" />
+              <span className="flex items-center gap-2">Processing <Loader2 size={12} className="animate-spin"/></span>
             ) : (
-              <ArrowUp size={18} strokeWidth={3} />
+              <span className="flex items-center gap-2">Initialize <ArrowRight size={12} /></span>
             )}
           </button>
         </div>
       </div>
-      <div className="text-center mt-3">
-         <p className="text-xs text-zinc-500">
-           To apply <span className="underline decoration-zinc-700 cursor-pointer hover:text-zinc-400">best practices</span> for a specific model, select the model top-left and describe your intent.
+      
+      {/* Helper text appearing only when focused or text present to keep it minimal */}
+      <div className={`mt-4 transition-opacity duration-500 ${isFocused || text ? 'opacity-100' : 'opacity-0'}`}>
+         <p className="text-xs text-muted font-sans">
+           Press <span className="text-sage">Enter</span> to generate. Shift + Enter for new line.
          </p>
       </div>
     </div>

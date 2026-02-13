@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Promptimizer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Eric Martin | Prompt Architecture</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     
-    <!-- Editorial Typography -->
+    <!-- Editorial Typography: Playfair Display + Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 
     <script>
       tailwind.config = {
@@ -17,44 +17,43 @@
         theme: {
           extend: {
             colors: {
-              background: '#09090b', // Zinc 950
-              surface: '#18181b',    // Zinc 900
-              border: '#27272a',     // Zinc 800
-              text: '#e4e4e7',       // Zinc 200
-              muted: '#a1a1aa',      // Zinc 400
+              background: '#1a1a1a', // Deep Charcoal
+              surface: '#222222',    // Slightly lighter charcoal
+              border: '#333333',     // Subtle divider
+              text: '#f5f5f0',       // Off-white / Cream
+              muted: '#888888',      // Neutral Gray
+              sage: '#8B956D',       // Brand Accent
+              'sage-light': '#A3AD85', // Hover state
+              'sage-dim': 'rgba(139, 149, 109, 0.1)',
             },
             fontFamily: {
-              serif: ['"Source Serif 4"', 'serif'],
-              sans: ['"IBM Plex Sans"', 'sans-serif'],
+              serif: ['"Playfair Display"', 'serif'],
+              sans: ['"Inter"', 'sans-serif'],
             },
             animation: {
-              'in': 'enter 0.4s cubic-bezier(0.2, 0.0, 0.2, 1) forwards',
+              'in': 'enter 0.6s cubic-bezier(0.2, 0.0, 0.2, 1) forwards',
+              'fade': 'fade 0.4s ease-out forwards',
+            },
+            keyframes: {
+              enter: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              fade: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              }
             }
-          }
-        }
-      }
-    </script>
-    <script>
-      // Polyfill process.env for browser environments
-      if (typeof process === 'undefined') {
-        window.process = { env: {} };
+          },
+        },
       }
     </script>
     <style>
       body {
-        background-color: #09090b;
-        color: #e4e4e7;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+        background-color: #1a1a1a;
+        color: #f5f5f0;
       }
-      
-      /* Editorial Focus Ring */
-      textarea:focus, input:focus, button:focus-visible {
-        outline: none;
-        box-shadow: 0 0 0 2px #27272a, 0 0 0 4px #09090b;
-      }
-
-      /* Subtle Scrollbar */
+      /* Custom Scrollbar for the editorial look */
       ::-webkit-scrollbar {
         width: 6px;
       }
@@ -62,36 +61,28 @@
         background: transparent;
       }
       ::-webkit-scrollbar-thumb {
-        background: #3f3f46;
+        background: #333;
         border-radius: 3px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #52525b;
-      }
-
-      /* Animation Utility */
-      @keyframes enter {
-        from { opacity: 0; transform: translateY(12px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      .animate-enter {
-        animation: enter 0.4s cubic-bezier(0.2, 0.0, 0.2, 1) forwards;
+        background: #8B956D;
       }
     </style>
   <script type="importmap">
 {
   "imports": {
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
     "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "@google/genai": "https://esm.sh/@google/genai"
+    "react-dom": "https://esm.sh/react-dom@^19.2.3",
+    "@google/genai": "https://esm.sh/@google/genai@^1.36.0",
+    "react-markdown": "https://esm.sh/react-markdown@^10.1.0"
   }
 }
 </script>
 </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="./index.tsx"></script>
   </body>
 </html>
