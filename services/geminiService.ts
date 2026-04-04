@@ -17,7 +17,7 @@ export const optimizePrompt = async (
   const modelName = targetModel?.name || targetModelId;
 
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  const modelId = "gemini-3-pro-preview"; // The brain of the operation
+  const modelId = "gemini-3.1-pro-preview"; // The brain of the operation
 
   // --- PASS 1: Initial Generation ---
   const promptPass1 = `
@@ -36,9 +36,10 @@ export const optimizePrompt = async (
     """
     
     Requirements:
-    1. Apply the best practices listed above.
-    2. Maintain the user's original intent perfectly.
-    3. Return the result in JSON.
+    1. Use the Google Search tool to find the most current, authoritative prompt engineering best practices and official documentation for ${modelName}.
+    2. Apply the best practices listed above AND the newly found best practices from your search.
+    3. Maintain the user's original intent perfectly.
+    4. Return the result in JSON.
   `;
 
   try {
@@ -47,6 +48,7 @@ export const optimizePrompt = async (
       contents: promptPass1,
       config: {
         systemInstruction: DEFAULT_SYSTEM_INSTRUCTION,
+        tools: [{ googleSearch: {} }],
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
@@ -86,10 +88,11 @@ export const optimizePrompt = async (
 
       INSTRUCTIONS:
       1. Act as a Senior Principal Prompt Engineer.
-      2. Critique the DRAFT PROMPT. Does it *actually* follow the best practices? Is it concise? Did it hallucinate restrictions?
-      3. Rewrite the prompt to be absolutely perfect for ${modelName}.
-      4. If the Draft was already perfect, return it unchanged.
-      5. Update the explanation to briefly summarize the refinement.
+      2. Use the Google Search tool to find the most current, authoritative prompt engineering best practices for ${modelName}.
+      3. Critique the DRAFT PROMPT. Does it *actually* follow the best practices (both provided and found via search)? Is it concise? Did it hallucinate restrictions?
+      4. Rewrite the prompt to be absolutely perfect for ${modelName}.
+      5. If the Draft was already perfect, return it unchanged.
+      6. Update the explanation to briefly summarize the refinement.
     `;
 
     const response2 = await ai.models.generateContent({
@@ -97,6 +100,7 @@ export const optimizePrompt = async (
       contents: promptPass2,
       config: {
         systemInstruction: "You are a perfectionist critic. You fix subtle errors in prompt engineering.",
+        tools: [{ googleSearch: {} }],
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,

@@ -10,8 +10,8 @@ export enum TargetModelId {
   CLAUDE_OPUS_4_5 = 'claude-opus-4.5',
 
   // Google
-  GEMINI_3_PRO = 'gemini-3-pro',
-  GEMINI_3_FLASH = 'gemini-3-flash',
+  GEMINI_3_1_PRO = 'gemini-3.1-pro',
+  GEMINI_3_1_FLASH = 'gemini-3.1-flash',
 
   // Microsoft
   COPILOT_PRO = 'copilot-pro',

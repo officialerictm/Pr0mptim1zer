@@ -102,8 +102,8 @@ export const TARGET_MODELS: TargetModel[] = [
   // GOOGLE
   // ==================================================================================
   {
-    id: TargetModelId.GEMINI_3_PRO,
-    name: 'Gemini 3 Pro',
+    id: TargetModelId.GEMINI_3_1_PRO,
+    name: 'Gemini 3.1 Pro',
     brand: 'Gemini',
     isDefault: true,
     provider: 'Google',
@@ -118,8 +118,8 @@ export const TARGET_MODELS: TargetModel[] = [
     sources: [{ title: 'Prompting Strategies', url: 'https://ai.google.dev/gemini-api/docs/prompting-strategies' }]
   },
   {
-    id: TargetModelId.GEMINI_3_FLASH,
-    name: 'Gemini 3 Flash',
+    id: TargetModelId.GEMINI_3_1_FLASH,
+    name: 'Gemini 3.1 Flash',
     brand: 'Gemini',
     provider: 'Google',
     mode: 'api',
